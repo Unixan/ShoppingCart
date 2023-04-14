@@ -10,7 +10,7 @@ public class Product
     {
         _name = name;
         _price = price;
-        _count = 0;
+        _count = count;
     }
 
     public void AddCount(int count)
