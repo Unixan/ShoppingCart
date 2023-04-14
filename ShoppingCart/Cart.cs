@@ -33,12 +33,12 @@ public class Cart
         }
         Console.WriteLine("Handlekurv:");
         var totalPrice = 0;
-        for (int i = 0; i < _products.Count; i++)
+        foreach (var product in _products)
         {
-            var count = _products[i].GetCount();
-            var productName = _products[i].GetName();
-            var price = _products[i].GetPrice();
-            var orderLinePrice = price * count;
+            var count = product.GetCount();
+            var productName = product.GetName();
+            var price = product.GetPrice();
+            var orderLinePrice = product.GetTotal();
             Console.WriteLine($"  {count} stk. {productName} a kr {price} = {orderLinePrice}");
             totalPrice += orderLinePrice;
         }
