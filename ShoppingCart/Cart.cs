@@ -2,47 +2,45 @@
 
 public class Cart
 {
-    private List<Product> _products;
-
+    private List<OrderLine> _orders;
+    private int _total => _orders.Sum(orderLine => orderLine.GetTotal());
     public Cart()
     {
-        _products = new List<Product>();
+        _orders = new List<OrderLine>();
     }
 
-    public void AddToCart(Product product, int count)
+    public void AddToCart(Product order, int count = 0)
     {
-        if (_products.Contains(product))
+        foreach (var orderLine in _orders.Where(orderLine => orderLine.GetName() == order.GetName()))
         {
-            var orderLineIndex = _products.IndexOf(product);
-            _products[orderLineIndex].AddCount(count);
+            orderLine.AddCount(count);
+            if (orderLine.GetCount() > 0) return;
+            _orders.Remove(orderLine);
+            return;
         }
-        else
-        {
-            _products.Add(product);
-            var orderLineIndex = _products.IndexOf(product);
-            _products[orderLineIndex].AddCount(count);
-        }
+
+        _orders.Add(new OrderLine(order, count));
+        
     }
 
     public void ShowCart()
     {
-        if (_products.Count == 0)
+        if (_orders.Count == 0)
         {
             Console.WriteLine("Handlekurven er tom.");
             return;
         }
         Console.WriteLine("Handlekurv:");
-        var totalPrice = 0;
-        foreach (var product in _products)
+        foreach (var order in _orders)
         {
-            var count = product.GetCount();
-            var productName = product.GetName();
-            var price = product.GetPrice();
-            var orderLinePrice = product.GetTotal();
+            var count = order.GetCount();
+            var productName = order.GetName();
+            var price = order.GetPrice();
+            var orderLinePrice = order.GetTotal();
             Console.WriteLine($"  {count} stk. {productName} a kr {price} = {orderLinePrice}");
-            totalPrice += orderLinePrice;
         }
 
-        Console.WriteLine($"Totalpris: {totalPrice}");
+        Console.WriteLine($"Totalpris: {_total}");
     }
+
 }
