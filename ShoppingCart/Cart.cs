@@ -3,25 +3,23 @@
 public class Cart
 {
     private List<OrderLine> _orders;
-    private int _total => _orders.Sum(orderLine => orderLine.GetTotal());
+    private int _total => _orders.Sum(orderLine => orderLine.Total);
     public Cart()
     {
         _orders = new List<OrderLine>();
     }
 
-    public void AddToCart(Product order, int count = 0)
+    public void AddToCart(Product product, int count = 0)
     {
-        foreach (var orderLine in _orders.Where(orderLine => orderLine.GetName() == order.GetName()))
+        var orderline = _orders.FirstOrDefault(o => o.Product == product);
+        if (!_orders.Contains(orderline)) _orders.Add(new OrderLine(product, count));
+        else
         {
-            orderLine.AddCount(count);
-            if (orderLine.GetCount() > 0) return;
-            _orders.Remove(orderLine);
-            return;
+            orderline.AddCount(count);
+            if (orderline.Quantity <= 0) _orders.Remove(orderline);
         }
-
-        _orders.Add(new OrderLine(order, count));
-        
     }
+
 
     public void ShowCart()
     {
@@ -33,11 +31,7 @@ public class Cart
         Console.WriteLine("Handlekurv:");
         foreach (var order in _orders)
         {
-            var count = order.GetCount();
-            var productName = order.GetName();
-            var price = order.GetPrice();
-            var orderLinePrice = order.GetTotal();
-            Console.WriteLine($"  {count} stk. {productName} a kr {price} = {orderLinePrice}");
+            Console.WriteLine(order.GetOrderInfo());
         }
 
         Console.WriteLine($"Totalpris: {_total}");

@@ -2,23 +2,13 @@
 
 public class Product
 {
-    private string _name;
-    private int _price;
-    
+    public string Name { get; }
+    public int Price { get; }
+
     public Product(string name, int price)
     {
-        _name = name;
-        _price = price;
+        Name = name;
+        Price = price;
     }
-    public string GetName()
-    {
-        return _name;
-    }
-
-    public int GetPrice()
-    {
-        return _price;
-    }
-
     
 }

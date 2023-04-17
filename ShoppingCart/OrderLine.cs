@@ -2,40 +2,26 @@
 
 public class OrderLine
 {
-    private Product _product;
-    private int _quantity;
-    private int _total => _quantity * _product.GetPrice();
+    public Product Product { get; }
+    public int Quantity { get; private set; }
+    public int Total => Quantity * Product.Price;
 
     public OrderLine(Product product, int quantity = 0)
     {
-        _product = product;
-        _quantity = quantity;
+        Product = product;
+        Quantity = quantity;
     }
 
     public void AddCount(int count)
     {
-        _quantity += count;
-    }
-
-    public int GetCount()
-    {
-        return _quantity;
-    }
-
-    public string GetName()
-    {
-        return _product.GetName();
-    }
-
-    public int GetPrice()
-    {
-        return _product.GetPrice();
-    }
-
-    public int GetTotal()
-    {
-        return _total;
+        Quantity += count;
     }
     
+    public string GetOrderInfo()
+    {
+        
+        return $"{Quantity} stk. {Product.Name} a kr {Product.Price} = {Total}";
+    }
+
 }
 
